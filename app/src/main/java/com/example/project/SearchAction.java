@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.github.kiulian.downloader.YoutubeDownloader;
 import com.github.kiulian.downloader.downloader.request.RequestSearchResult;
@@ -60,10 +61,12 @@ public class SearchAction implements Runnable {
         try {
             result = downloader.search(request).data();
         } catch (NumberFormatException e){
-            //Toast.makeText(activity, "Too much results; Try to add more context", Toast.LENGTH_LONG).show();
+            activity.runOnUiThread(() -> {
+                Toast.makeText(activity.getApplicationContext(),
+                        "Too much results; Try to add more context", Toast.LENGTH_SHORT).show();
+            });
             return;
         }
-        if(result == null){return;} //Log out TODO: try catch at start
         List<SearchResultVideoDetails> videos = result.videos();
 
         for(int i = 0; i < numberOfSections; i++) {

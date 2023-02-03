@@ -2,10 +2,12 @@ package com.example.project;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -52,9 +54,18 @@ public class ViewUpdateAction {
 
                 int lambdaI = i;
                 button.setOnClickListener(view1 -> {
-                    DownloadAction action = new DownloadAction(ids.get(lambdaI), activity);
-                    Thread thread = new Thread(action);
-                    thread.start();
+                    try {
+                        DownloadAction action = new DownloadAction(ids.get(lambdaI),
+                                titles.get(lambdaI), activity);
+                        Thread thread = new Thread(action);
+                        thread.start();
+                    } catch (Exception e) {
+                        Log.e("Download Error", e.getMessage());
+                        activity.runOnUiThread(() -> {
+                            Toast.makeText(activity.getApplicationContext(), "Download Error",
+                                    Toast.LENGTH_SHORT).show();
+                        });
+                    }
                 });
                 if(button.getVisibility() != View.VISIBLE) {button.setVisibility(View.VISIBLE);}
             }

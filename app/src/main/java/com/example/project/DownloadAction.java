@@ -10,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Environment;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.github.kiulian.downloader.YoutubeDownloader;
 import com.github.kiulian.downloader.downloader.request.RequestVideoInfo;
@@ -25,10 +26,12 @@ import java.io.IOException;
 public class DownloadAction implements Runnable {
     private final YoutubeDownloader downloader = new YoutubeDownloader();
     private final String id;
+    private final String title;
     private final Activity activity;
 
-    DownloadAction(String id, Activity activity){
+    DownloadAction(String id, String title, Activity activity){
         this.id = id;
+        this.title = title;
         this.activity = activity;
     }
 
@@ -38,18 +41,16 @@ public class DownloadAction implements Runnable {
         RequestVideoInfo request = new RequestVideoInfo(id);
         Response<VideoInfo> response = downloader.getVideoInfo(request);
 
-        if(response == null){return;} //Log out TODO: try catch at start
-
         VideoInfo video = response.data();
         Format audio = video.bestAudioFormat(); //TODO: mb make this editable
 
         achievePermissions(); //TODO: Devil's toy
 
         Log.i("File", Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
-                + "/" + id + "." + audio.extension().value());
+                + "/" + title + "." + audio.extension().value());
 
         File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
-                + "/" + id + "." + audio.extension().value());
+                + "/" + title + "." + audio.extension().value());
         FileOutputStream fOut;
         try {
             fOut = new FileOutputStream(file);
@@ -59,6 +60,11 @@ public class DownloadAction implements Runnable {
         } catch (IOException e) {
             Log.e("File", e.getMessage());
         }
+        activity.runOnUiThread(() -> {
+            Toast.makeText(activity.getApplicationContext(),
+                    "Downloaded", Toast.LENGTH_SHORT).show();
+        });
+
     }
     public void achievePermissions() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {

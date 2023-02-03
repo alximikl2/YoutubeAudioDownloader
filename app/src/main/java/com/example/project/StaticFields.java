@@ -72,7 +72,7 @@ class StaticFields {
         return numberOfSections;
     }
 
-    public static void onActivityCreate(View view) {
+    public static void onActivityCreate(View view) { //TODO: more fields
         titleFields.clear();
         viewsFields.clear();
         channelsFields.clear();
