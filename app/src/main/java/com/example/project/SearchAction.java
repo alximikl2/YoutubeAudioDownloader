@@ -41,7 +41,7 @@ public class SearchAction implements Runnable {
     }
 
     @Override
-    public void run() {
+    public void run() throws NullPointerException{
         search();
         if(isSearchSuccessful){
             StaticFields.receiveData(ids, views, titles, channels, thumbs);
@@ -50,7 +50,7 @@ public class SearchAction implements Runnable {
         }
         System.gc(); //clear in the end
     }
-    private void search(){
+    private void search() throws NullPointerException{
         Log.i("Thread2", Thread.currentThread().getName());
 
         RequestSearchResult request = new RequestSearchResult(search)

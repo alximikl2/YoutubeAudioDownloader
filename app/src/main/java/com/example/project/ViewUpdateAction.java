@@ -59,10 +59,10 @@ public class ViewUpdateAction {
                                 titles.get(lambdaI), activity);
                         Thread thread = new Thread(action);
                         thread.start();
-                    } catch (Exception e) {
-                        Log.e("Download Error", e.getMessage());
+                    } catch (NullPointerException e) {
+                        Log.e("Download Timeout", e.getMessage());
                         activity.runOnUiThread(() -> {
-                            Toast.makeText(activity.getApplicationContext(), "Download Error",
+                            Toast.makeText(activity.getApplicationContext(), "Download Timeout",
                                     Toast.LENGTH_SHORT).show();
                         });
                     }

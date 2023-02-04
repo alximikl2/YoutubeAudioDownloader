@@ -37,7 +37,7 @@ public class DownloadAction implements Runnable {
 
 
     @Override
-    public void run() {
+    public void run() throws NullPointerException{
         RequestVideoInfo request = new RequestVideoInfo(id);
         Response<VideoInfo> response = downloader.getVideoInfo(request);
 

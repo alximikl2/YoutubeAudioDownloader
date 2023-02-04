@@ -90,9 +90,9 @@ public class MainActivity extends AppCompatActivity {
                 SearchAction action = new SearchAction(view, search, this);
                 Thread thread = new Thread(action);
                 thread.start();
-            } catch (Exception e) {
-                Log.e("Search Error", e.getMessage());
-                Toast.makeText(this.getApplicationContext(), "Search Error",
+            } catch (NullPointerException e) {
+                Log.e("Search Timeout", e.getMessage());
+                Toast.makeText(this.getApplicationContext(), "Search Timeout",
                         Toast.LENGTH_SHORT).show();
             }
         });
